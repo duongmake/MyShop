@@ -12,6 +12,11 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<MyShopContext>(option => option.UseSqlServer(
         builder.Configuration.GetConnectionString("MyShop")));
+builder.Services.AddCors(p => p.AddPolicy("MyCors", build =>
+{
+    //build.WithOrigins("https://duongpt.info", "https://localhost:3000");
+    build.WithOrigins("*").AllowAnyMethod().AllowAnyHeader();
+}));
 
 var app = builder.Build();
 
@@ -23,6 +28,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors("MyCors");
 
 app.UseAuthorization();
 
